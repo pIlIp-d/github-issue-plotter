@@ -20,11 +20,9 @@ jobs:
       - name: Run Python script
         run: python plotter.py -o OctoPi-Team -r OctoPi
 
-      - run: mkdir www && mv diagram.png www
-      - name: Create index HTML
-        run: echo "<img src='./diagram.png'>" >> www/index.html
-
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
         with:
-          folder: www
+          name: Diagram Artifact
+          path: diagram.png
+
