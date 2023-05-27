@@ -19,6 +19,8 @@ jobs:
           repository: 'github-issue-plotter'
       - run: cd github-issue-plotter
 
+      - run: ls -la
+
       - name: Install dependencies
         run: pip install -r requirements.txt
 
