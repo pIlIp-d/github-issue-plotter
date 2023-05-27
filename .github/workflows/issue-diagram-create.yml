@@ -1,32 +1,34 @@
-name: Automatic Deployment
-on:
-  push:
-    branches:
-      - main
-      - 'releases/**'
+name: Deploy Issue Diagram
+
+on: workflow_dispatch
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x]
+
     steps:
-      - name: Load Repo
-        uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - name: Build the App
-        run: npm ci && npm run build
-      - name: Deploy to Cloud Foundry
-        uses: citizen-of-planet-earth/cf-cli-action@v2
+          python-version: 3.11
+
+      - name: Clone GuillaumeFalourd/poc-github-actions PUBLIC repository
+        uses: GuillaumeFalourd/clone-github-repo-action@v2
         with:
-          cf_api: https://api.cf.eu10-004.hana.ondemand.com
-          cf_username: ${{ secrets.CF_USER }}
-          cf_password: ${{ secrets.CF_PASSWORD }}
-          cf_org: sovanta AG TDD (Pay as you go)_hs-mannheim
-          cf_space: Octo Pi
-          command: push -f manifest.yml
+          owner: 'pilip-d'
+          repository: 'github-issue-plotter'
+      - run: cd github-issue-plotter
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Python script
+        run: python plotter.py -o OctoPi-Team -r OctoPi
+      - name: Create index HTML
+        run: echo "<img src='./diagram.png'>" >> index.html
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
