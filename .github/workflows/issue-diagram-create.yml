@@ -19,11 +19,12 @@ jobs:
 
       - name: Run Python script
         run: python plotter.py -o OctoPi-Team -r OctoPi
-      - name: Create index HTML
-        run: echo "<img src='./diagram.png'>" >> index.html
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - run: mkdir www && mv diagram.png www
+      - name: Create index HTML
+        run: echo "<img src='./diagram.png'>" >> www/index.html
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+          folder: www
