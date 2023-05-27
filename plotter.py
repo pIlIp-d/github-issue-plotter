@@ -5,10 +5,24 @@ import requests
 from datetime import datetime
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import argparse
 
-repo_owner = "OctoPi-Team"
-repo_name = "OctoPi"
-url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/issues"
+all_args = argparse.ArgumentParser(
+    prog='github issue plotter',
+    usage='%(prog)s [options]',
+    description='Plot your Issues by label. Better than Githubs version and supports opened and closed issues.'
+)
+all_args.add_argument(
+   "-o", "--owner",
+    required=True
+)
+all_args.add_argument(
+    "-r", "--repo",
+    required=True
+)
+args = vars(all_args.parse_args())
+
+url = f"https://api.github.com/repos/{args['owner']}/{args['repo']}/issues"
 
 # only dates until this one are getting plotted
 upper_date_limit = datetime(2023, 5, 27)
