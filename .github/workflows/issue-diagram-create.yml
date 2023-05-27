@@ -12,14 +12,10 @@ jobs:
         with:
           python-version: 3.11
 
-      - name: Clone GuillaumeFalourd/poc-github-actions PUBLIC repository
-        uses: GuillaumeFalourd/clone-github-repo-action@v2
-        with:
-          owner: 'pilip-d'
-          repository: 'github-issue-plotter'
+      - uses: actions/checkout@v3
 
       - name: Install dependencies
-        run: cd github-issue-plotter && pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Run Python script
         run: python plotter.py -o OctoPi-Team -r OctoPi
