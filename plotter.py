@@ -14,7 +14,7 @@ all_args = argparse.ArgumentParser(
     description='Plot your Issues by label. Better than Githubs version and supports opened and closed issues.'
 )
 all_args.add_argument(
-   "-o", "--owner",
+    "-o", "--owner",
     required=True
 )
 all_args.add_argument(
@@ -174,6 +174,11 @@ if __name__ == "__main__":
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%d.%m'))
     plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=2))
 
+    plt.hlines(
+        list(range(0, int(ax.get_ylim()[1])+1)),  # height range
+        dates[0], dates[-1],  # width range
+        colors="black", linestyles="dashed", linewidth=0.2
+    )
     plt.legend(loc='upper left')
     plt.tight_layout()
 
