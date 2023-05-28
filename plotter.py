@@ -1,6 +1,7 @@
 # Copyright 2023 Philip Dell
 # MIT-Licence
 
+import time
 import requests
 from datetime import datetime
 import matplotlib.pyplot as plt
@@ -41,8 +42,16 @@ dates = []
 
 def get_issues():
     # state all -> get all open and closed issues
-    response = requests.get(url, params={"state": "all", "sort": "created"})
-    return response.json()
+    issues = []
+    page = 1
+    while True:
+        response = requests.get(url, params={"state": "all", "sort": "created", "per_page": 100, "page": page}).json()
+        time.sleep(1)
+        page += 1
+        if not response:
+            break
+        issues.extend(response)
+    return issues
 
 
 def get_datetime(string):
