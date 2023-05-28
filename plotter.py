@@ -177,7 +177,7 @@ if __name__ == "__main__":
     plt.hlines(
         list(range(0, int(ax.get_ylim()[1])+1)),  # height range
         dates[0], dates[-1],  # width range
-        colors="black", linestyles="dashed", linewidth=0.2
+        colors="black", linestyles="solid", linewidth=0.1
     )
     plt.legend(loc='upper left')
     plt.tight_layout()
