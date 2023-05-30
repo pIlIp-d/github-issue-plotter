@@ -26,7 +26,7 @@ args = vars(all_args.parse_args())
 url = f"https://api.github.com/repos/{args['owner']}/{args['repo']}/issues"
 
 # only dates until this one are getting plotted
-upper_date_limit = datetime(2023, 5, 27)
+upper_date_limit = datetime(2050, 1, 1)
 
 labels = []
 colors = {}
