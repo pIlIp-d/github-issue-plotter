@@ -39,6 +39,35 @@ closed_issues = {}
 merged_issues = {}
 dates = []
 
+tag_list_weights = [
+    ("extreme", 5),
+    ("massive", 4),
+    ("severe", 4),
+    ("intense", 3),
+    ("high", 3),
+    ("moderate", 2),
+    ("medium", 2),
+    ("subtle", 1),
+    ("low", 1),
+    ("drastic", 3),
+    ("huge", 3),
+    ("significant", 2),
+    ("minor", 1),
+    ("negligible", 1),
+    ("small", 1)
+]
+
+
+def sort_values_by_weight(tag_values):
+    def get_weight(tag):
+        for t, w in tag_list_weights:
+            if t in tag:
+                return w
+        INT_MAX = 2147483647
+        return INT_MAX
+
+    return sorted(tag_values, key=get_weight)
+
 
 def get_issues():
     # state all -> get all open and closed issues
@@ -90,6 +119,8 @@ if __name__ == "__main__":
                 open_issues[issue_info["label"]] = []
             open_issues[issue_info["label"]].append(issue_info)
             colors[issue_info["label"]] = issue_info["color"]
+
+    labels = sort_values_by_weight(labels)
 
     for prio in open_issues:
         for issue in open_issues[prio]:
@@ -172,10 +203,10 @@ if __name__ == "__main__":
     ax.set_ylabel('Anzahl an Bugs')
 
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%d.%m'))
-    plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=2))
+    plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=3))
 
     plt.hlines(
-        list(range(0, int(ax.get_ylim()[1])+1)),  # height range
+        list(range(0, int(ax.get_ylim()[1]) + 1)),  # height range
         dates[0], dates[-1],  # width range
         colors="black", linestyles="solid", linewidth=0.1
     )
